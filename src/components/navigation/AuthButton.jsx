@@ -14,10 +14,15 @@ export default function AuthButton() {
     <>
       {isLoggedIn ? 
       <UserDropDown/>
-       : 
-      <Button>
+       :
+       <div className='flex gap-x-2'>
+      <Button size='small' className='text-white'>
         Iniciar Sesión
       </Button>
+      <Button size='small' className='text-white' variant="contained">
+        Registrarse
+      </Button>
+      </div>
       }
     </>
   );
