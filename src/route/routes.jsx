@@ -7,6 +7,7 @@ import Error404 from "../containets/errors/Error404"
 import { authRoutes } from "./auth-routes";
 
 import UserProfile from "../containets/pages/UserProfile";
+import { contableRoutes } from "./contable-routes";
 
 
 export const router = createBrowserRouter([
@@ -25,5 +26,9 @@ export const router = createBrowserRouter([
   {
     path: "auth/",
     children: authRoutes
+  },
+  {
+    path: "dashboard/",
+    children: contableRoutes
   }
 ]);

@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Button } from '@mui/material'
-import { Card, CardContent } from "@/components/ui/card"
+
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
+
 
 export default function PanelContable() {
   const [submenuActivo, setSubmenuActivo] = useState(null)
@@ -14,8 +15,8 @@ export default function PanelContable() {
 
   return (
     <div className="min-h-screen bg-[#cde8e5] p-5">
-      <Card className="mx-auto max-w-3xl">
-        <CardContent className="p-6">
+      <div className="mx-auto max-w-3xl">
+        <div className="p-6">
           <header className="mb-6 flex items-center justify-center relative">
             <Button 
               variant="ghost" 
@@ -40,7 +41,7 @@ export default function PanelContable() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => navigate('/ganancias')}
+                onClick={() => navigate('ganancias')}
               >
                 Ganancia
               </Button>
@@ -55,10 +56,10 @@ export default function PanelContable() {
             {submenuActivo === 'gastos' && (
               <div className="flex justify-center gap-4 animate-in slide-in-from-top">
                 <Button>
-                  <Link to="/cargar-gasto">Cargar Gasto</Link>
+                  <Link to="cargar-gasto">Cargar Gasto</Link>
                 </Button>
                 <Button>
-                  <Link to="/gastos">Gastos Ingresados</Link>
+                  <Link to="gastos">Gastos Ingresados</Link>
                 </Button>
               </div>
             )}
@@ -66,16 +67,16 @@ export default function PanelContable() {
             {submenuActivo === 'libros' && (
               <div className="flex justify-center gap-4 animate-in slide-in-from-top">
                 <Button>
-                  <Link to="/libro-diario">Libro Diario</Link>
+                  <Link to="libro-diario">Libro Diario</Link>
                 </Button>
                 <Button>
-                  <Link to="/libro-mayor">Libro Mayor</Link>
+                  <Link to="libro-mayor">Libro Mayor</Link>
                 </Button>
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }
