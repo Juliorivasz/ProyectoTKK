@@ -16,10 +16,10 @@ export default function AuthButton() {
       <UserDropDown/>
        :
        <div className='flex gap-x-2'>
-      <Button size='small' className='text-white'>
+      <Button size='small' className='text-white' href={'/auth/login'}>
         Iniciar Sesión
       </Button>
-      <Button size='small' className='text-white' variant="contained">
+      <Button size='small' className='text-white' variant="contained" href={'/auth/login'}>
         Registrarse
       </Button>
       </div>
