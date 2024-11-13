@@ -4,7 +4,7 @@ import GastosIngresados from "../containets/pages/dashboard/contable/GastosIngre
 
 import LibroMayor from "../containets/pages/dashboard/contable/LibroMayor";
 import LibroDiario from "../containets/pages/dashboard/contable/LibroDiario";
-import Ganancias from "../containets/pages/dashboard/contable/Ganancias.JSX";
+
 
 export const contableRoutes = [
   {
@@ -27,9 +27,6 @@ export const contableRoutes = [
     path: "contable/libro-diario/",
     element: <LibroDiario />,
   },
-   {
-    path: "contable/ganancias/",
-    element: <Ganancias />,
-  },
+  
 
 ]

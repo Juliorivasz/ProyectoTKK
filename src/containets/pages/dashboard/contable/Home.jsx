@@ -39,12 +39,7 @@ export default function PanelContable() {
               >
                 Gastos
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => navigate('ganancias')}
-              >
-                Ganancia
-              </Button>
+              
               <Button
                 variant="outline"
                 onClick={() => mostrarSubmenu('libros')}
