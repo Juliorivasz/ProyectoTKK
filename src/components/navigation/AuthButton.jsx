@@ -1,18 +1,15 @@
-import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import UserDropDown from './UserDropDown';
+import { useUser } from '../../context/UserContext';
 
 export default function AuthButton() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useUser();
 
-  useEffect(() => {
-    const email = localStorage.getItem('email');
-    setIsLoggedIn(!!email); 
-  }, []);
+ console.log({user})
 
   return (
     <>
-      {isLoggedIn ? 
+      {user ? 
       <UserDropDown/>
        :
        <div className='flex gap-x-2'>
