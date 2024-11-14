@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
 import { FaUserCircle } from 'react-icons/fa';
 
