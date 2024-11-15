@@ -1,9 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../../components/layouts/Layout";
 import { useUser } from "../../context/UserContext";
-import { handleLogin } from "../../libs/actions/client"; // Importamos el método handleLogin
+import { handleLogin } from "../../libs/actions/client"; 
+import fondo from "../../../src/assets/images/theKrustyKrab.jpg";
+import logo from "../../../public/images/TKK.svg";
 
+// Lista de usuarios simulada
+const users = [
+  {
+    email: "admin@example.com",
+    password: "admin123",
+    thumbnail: "https://via.placeholder.com/50",
+    role: "admin",
+    isAdmin: true,
+  },
+  {
+    email: "user@example.com",
+    password: "user123",
+    thumbnail: "https://via.placeholder.com/50",
+    role: "client",
+    isAdmin: false,
+  },
+];
 export default function Login() {
   const { user, login, logout } = useUser();
   const [mail, setmail] = useState("");
@@ -40,12 +58,27 @@ export default function Login() {
   };
 
   return (
-    <Layout>
-      <div className="w-full h-screen justify-center items-center flex">
-        <div className="w-full max-w-xs">
+    <div className="relative w-full h-screen">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${fondo})`, 
+          filter: 'blur(10px)',
+          zIndex: -1,
+        }}
+      ></div>
+      <div className="w-full h-full flex items-center justify-center bg-black bg-opacity-60">
+        <div className="w-full max-w-md bg-gray-800 rounded-lg p-8 text-white bg-opacity-90">
+          <div className="flex justify-center mb-6">
+            <img src={logo} alt="Logo" className="w-24 h-24" />
+          </div>
           {user ? (
             <div className="text-center">
-              <img src={user.thumbnail} alt="User Thumbnail" className="rounded-full w-16 h-16 mb-4 mx-auto"/>
+              <img
+                src={user.thumbnail}
+                alt="User Thumbnail"
+                className="rounded-full w-16 h-16 mb-4 mx-auto"
+              />
               <h2 className="text-lg font-bold">
                 Welcome, {user.mail} ({user.role})
               </h2>
@@ -55,13 +88,13 @@ export default function Login() {
               </button>
             </div>
           ) : (
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form>
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                <label className="block text-sm font-bold mb-2" htmlFor="email">
                   Email
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
                   id="email"
                   type="text"
                   placeholder="Email"
@@ -69,34 +102,45 @@ export default function Login() {
                   onChange={(e) => setmail(e.target.value)}
                 />
               </div>
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              <div className="mb-4">
+                <label className="block text-sm font-bold mb-2" htmlFor="password">
                   Contraseña
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
                   id="password"
                   type="password"
                   placeholder="******************"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <a href="#" className="text-blue-400 text-xs mt-2 block">
+                  ¿Has olvidado tu contraseña?
+                </a>
                 {error && <p className="text-red-500 text-xs italic">{error}</p>}
               </div>
-              <div className="flex items-center justify-between">
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                  onClick={handleLoginSubmit} // Llamamos a la nueva función de login
-                >
-                  Entrar
-                </button>
+              <button
+                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button"
+                onClick={handleLoginSubmit}
+              >
+                Iniciar Sesión
+              </button>
+              <div className="flex items-center justify-center mt-2">
+                <button className="text-blue-400 text-sm">Soy Administrador</button>
+              </div>
+              <div className="text-center mt-4">
+                <p>
+                  ¿Todavía no tienes una cuenta?{" "}
+                  <a href="#" className="text-blue-400">
+                    Crea una ahora
+                  </a>
+                </p>
               </div>
             </form>
           )}
-          <p className="text-center text-gray-500 text-xs">&copy;2020 Acme Corp. All rights reserved.</p>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
