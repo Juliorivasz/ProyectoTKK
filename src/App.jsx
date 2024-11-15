@@ -15,7 +15,6 @@ const App = () => {
           <Route path="/auth/*" element={<AuthRoutes />} /> {/* Rutas de autenticación */}
           <Route path="/direcciones" element={<DireccionesPage />} />
           <Route path="*" element={<Error404 />} />
-         
         </Routes>
       </UserProvider>
     </BrowserRouter>

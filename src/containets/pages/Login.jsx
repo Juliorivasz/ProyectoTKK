@@ -3,25 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { handleLogin } from "../../libs/actions/client"; 
 import fondo from "../../../src/assets/images/theKrustyKrab.jpg";
-import logo from "../../../public/images/TKK.svg";
+import logo from "/images/TKK.svg";
 
-// Lista de usuarios simulada
-const users = [
-  {
-    email: "admin@example.com",
-    password: "admin123",
-    thumbnail: "https://via.placeholder.com/50",
-    role: "admin",
-    isAdmin: true,
-  },
-  {
-    email: "user@example.com",
-    password: "user123",
-    thumbnail: "https://via.placeholder.com/50",
-    role: "client",
-    isAdmin: false,
-  },
-];
 export default function Login() {
   const { user, login, logout } = useUser();
   const [mail, setmail] = useState("");
@@ -55,6 +38,10 @@ export default function Login() {
       console.error("Login error:", err);
       setError("Ocurrió un error al iniciar sesión. Intenta nuevamente.");
     }
+  };
+
+  const goRegister = () => {
+    navigate("/register");
   };
 
   return (
@@ -132,7 +119,7 @@ export default function Login() {
               <div className="text-center mt-4">
                 <p>
                   ¿Todavía no tienes una cuenta?{" "}
-                  <a href="#" className="text-blue-400">
+                  <a href="#" onClick={goRegister} className="text-blue-400">
                     Crea una ahora
                   </a>
                 </p>

@@ -1,4 +1,4 @@
-import bannerImage from "/images/banner.png"
+import bannerImage from "../../../assets/images/banner.png"
 import './banner.css'
 
 export default function Banner() {
