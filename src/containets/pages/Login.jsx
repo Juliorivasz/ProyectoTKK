@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
 import { useUser } from "../../context/UserContext";
 
@@ -94,6 +94,12 @@ export default function Login() {
                 >
                   Sign In
                 </button>
+                <Link
+                  to="/auth/loginadmin"
+                  className="inline-block align-baseline font-bold text-sm text-gray-500 hover:text-blue-800"
+                >
+                  Admin Login
+                </Link>
               </div>
             </form>
           )}

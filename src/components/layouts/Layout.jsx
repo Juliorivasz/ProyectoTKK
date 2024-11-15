@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 
-
-import { UserProvider } from "../../context/UserContext";
 import Footer from "../navigation/Footer";
 import Navbar from "../navigation/Navbar";
 
