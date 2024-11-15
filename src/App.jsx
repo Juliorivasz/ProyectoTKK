@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./containets/pages/Home";
 import Error404 from "./containets/errors/Error404";
 import { UserProvider } from "./context/UserContext";
@@ -13,7 +14,7 @@ const App = () => {
           <Route path="/auth/*" element={<AuthRoutes />} /> {/* Rutas de autenticación */}
           <Route path="/direcciones" element={<DireccionesPage />} />
           <Route path="*" element={<Error404 />} />
-         
+          
         </Routes>
       </UserProvider>
     </BrowserRouter>
