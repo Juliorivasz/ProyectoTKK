@@ -10,6 +10,7 @@ export default function NavbarAdmin({ handleLogout, userEmail }) {
 
             {/* Navegacion */}
             <div className="text-white flex gap-x-6">
+                <Link to="BannerAdmin" className="hover:text-gray-300">Inicio</Link>
                 <Link to="gestioncontable" className="hover:text-gray-300">Gestión Contable</Link>
                 <Link to="inventario" className="hover:text-gray-300">Inventario</Link>
             </div>
