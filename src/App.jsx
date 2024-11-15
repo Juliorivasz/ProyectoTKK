@@ -1,5 +1,4 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./containets/pages/Home";
 import Error404 from "./containets/errors/Error404";
 import { UserProvider } from "./context/UserContext";

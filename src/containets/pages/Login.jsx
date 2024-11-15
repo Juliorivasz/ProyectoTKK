@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
 import { useUser } from "../../context/UserContext";
 import fondo from "../../../src/assets/images/theKrustyKrab.jpg";
