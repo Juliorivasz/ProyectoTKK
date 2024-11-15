@@ -77,9 +77,9 @@ export const handleRegisterClient = async (nombre, apellido, email, telefono, pa
   }
 };
 
-export const handleLogin = async (mail, password) => {
+export const handleLogin = async (email, password) => {
   const datosLogin = {
-    mail,
+    email,
     password
   };
 

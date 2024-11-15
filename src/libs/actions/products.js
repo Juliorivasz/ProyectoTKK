@@ -1,20 +1,12 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_KEY)
-
-export async function getProducts(filter) {
-  let query = supabase.from("producto").select("*");
-
-  if (filter) {
-    query = query.ilike("category", `%${filter}%`);
+export async function getProducts() {
+  try {
+    const response = await fetch('http://localhost:8080/producto/actualizarPrecios');
+    const data = await response.json();
+    return data; // Retorna todo el objeto tal cual como está, con la propiedad 'precios'
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
+    return { precios: [] }; // En caso de error, retornamos un array vacío
   }
-
-  const { data, error } = await query;
-  
-  if (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-  
-  return data;
 }
+
+

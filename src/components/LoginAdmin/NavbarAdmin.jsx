@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import tkk from "../../../public/images/TKK.svg";
+import tkk from "/images/TKK.svg";
 
 export default function NavbarAdmin({ handleLogout, userEmail }) {
     return (
