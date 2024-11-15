@@ -5,8 +5,6 @@ import { useUser } from '../../context/UserContext';
 export default function AuthButton() {
   const { user } = useUser();
 
- console.log({user})
-
   return (
     <>
       {user ? 
@@ -16,7 +14,7 @@ export default function AuthButton() {
       <Button size='small' className='text-white' href={'/auth/login'}>
         Iniciar Sesión
       </Button>
-      <Button size='small' className='text-white' variant="contained" href={'/auth/login'}>
+      <Button size='small' className='text-white' variant="contained" href={'/register'}>
         Registrarse
       </Button>
       </div>

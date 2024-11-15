@@ -1,16 +1,57 @@
 import { useState } from "react";
-import fondo from "../../../../assets/images/theKrustyKrab.jpg"; // Asegúrate de que esta ruta sea correcta
+import fondo from "../../../../assets/images/theKrustyKrab.jpg";
+import Swal from "sweetalert2";
 
 export default function RecargarStock({ onNavigate }) {
     const [selectedItem, setSelectedItem] = useState("");
     const [newStock, setNewStock] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleItemChange = (e) => setSelectedItem(e.target.value);
     const handleStockChange = (e) => setNewStock(e.target.value);
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Materia Prima:", selectedItem, "Nuevo Stock:", newStock);
-        // Lógica para actualizar el stock de la materia prima
+
+        setIsSubmitting(true);
+
+        const payload = {
+            carga: [
+                {
+                    nombreMateriaPrima: selectedItem,
+                    cantidad: parseFloat(newStock),
+                },
+            ],
+        };
+
+        try {
+            const response = await fetch("http://localhost:8080/materiaPrima/carga", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const data = await response.text();
+            Swal.fire({
+                icon: "success",
+                title: "Stock actualizado",
+                text: `Carga realizada exitosamente: ${data}`,
+            });
+        } catch (err) {
+            Swal.fire({
+                icon: "error",
+                title: "Error al actualizar",
+                text: `No se pudo cargar el stock: ${err.message}`,
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const materiasPrimas = [
@@ -26,30 +67,33 @@ export default function RecargarStock({ onNavigate }) {
             <div
                 className="absolute inset-0"
                 style={{
-                    backgroundImage: `url(${fondo})`, // Asegúrate de que fondo es la ruta correcta
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    filter: 'blur(5px)',
-                    opacity: 0.5, // Ajusta la transparencia del fondo
-                    zIndex: -1, // Envía esta capa al fondo
+                    backgroundImage: `url(${fondo})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    filter: "blur(5px)",
+                    opacity: 0.5,
+                    zIndex: -1,
                 }}
             ></div>
 
-            {/* Botón para navegar a Modificar Costo en la esquina superior derecha */}
+            {/* Botón para navegar a Modificar Costo */}
             <div className="absolute top-4 right-4">
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     onClick={() => onNavigate("modificarCosto")}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 shadow"
                 >
                     Ir a Modificar Precio
                 </button>
             </div>
-    
-            {/* Formulario en el frente */}
-            <form className="relative bg-blue-100 bg-opacity-90 shadow-md rounded p-6 w-80 z-10" onSubmit={handleSubmit}>
+
+            {/* Formulario */}
+            <form
+                className="relative bg-blue-100 bg-opacity-90 shadow-md rounded p-6 w-80 z-10"
+                onSubmit={handleSubmit}
+            >
                 <h2 className="text-xl font-bold mb-4">Actualizar Stock</h2>
-    
+
                 <select
                     className="border p-2 mb-4 w-full"
                     value={selectedItem}
@@ -61,7 +105,7 @@ export default function RecargarStock({ onNavigate }) {
                         <option key={item} value={item}>{item}</option>
                     ))}
                 </select>
-    
+
                 <input
                     type="number"
                     placeholder="Stock en Kg"
@@ -70,14 +114,16 @@ export default function RecargarStock({ onNavigate }) {
                     onChange={handleStockChange}
                     required
                 />
-    
-                <button 
-                    type="submit" 
+
+                <button
+                    type="submit"
                     className="bg-green-500 text-white py-2 px-4 rounded w-full hover:bg-green-600 mb-4"
+                    disabled={isSubmitting}
                 >
-                    Confirmar
+                    {isSubmitting ? "Cargando..." : "Confirmar"}
                 </button>
             </form>
         </div>
     );
 }
+

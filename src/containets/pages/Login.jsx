@@ -1,52 +1,52 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import { handleLogin } from "../../libs/actions/client"; 
 import fondo from "../../../src/assets/images/theKrustyKrab.jpg";
-import logo from "../../../public/images/TKK.svg";
-
-// Lista de usuarios simulada
-const users = [
-  {
-    email: "admin@example.com",
-    password: "admin123",
-    thumbnail: "https://via.placeholder.com/50",
-    role: "admin",
-    isAdmin: true,
-  },
-  {
-    email: "user@example.com",
-    password: "user123",
-    thumbnail: "https://via.placeholder.com/50",
-    role: "client",
-    isAdmin: false,
-  },
-];
-
-
+import logo from "/images/TKK.svg";
 
 export default function Login() {
   const { user, login, logout } = useUser();
-  const [email, setEmail] = useState("");
+  const [mail, setmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const goAdmin =() => {
-    navigate("/auth/loginadmin")
-  }
-  const handleLogin = () => {
-    const foundUser = users.find(
-      (u) => u.email === email && u.password === password
-    );
+  // Revisa si el usuario está almacenado en localStorage cuando el componente se monta
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      login(JSON.parse(savedUser)); // Recupera al usuario del localStorage
+      navigate("/"); // Redirige al usuario si ya está logueado
+    }
+  }, [login, navigate]);
 
-    if (foundUser) {
-      login(foundUser); // Almacena el usuario en el contexto
-      setError("");
-      navigate("/"); // Redirige al usuario a la página principal
-    } else {
-      setError("Invalid email or password.");
+  // Función de login actualizada
+  const handleLoginSubmit = async () => {
+    try {
+      // Llamamos al método handleLogin que realiza la solicitud al backend
+      const data = await handleLogin(mail, password);
+
+      if (data) {
+        login(data); // Almacena los datos del usuario en el contexto
+        setError("");
+        navigate("/"); // Redirige al usuario a la página principal
+      } else {
+        setError("Invalid email or password.");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Ocurrió un error al iniciar sesión. Intenta nuevamente.");
     }
   };
+
+  const goRegister = () => {
+    navigate("/register");
+  };
+
+  const goAdmin = () => {
+    navigate("/auth/loginadmin");
+  }
 
   return (
     <div className="relative w-full h-screen">
@@ -71,7 +71,7 @@ export default function Login() {
                 className="rounded-full w-16 h-16 mb-4 mx-auto"
               />
               <h2 className="text-lg font-bold">
-                Welcome, {user.email} ({user.role})
+                Welcome, {user.mail} ({user.role})
               </h2>
               <p>{user.isAdmin ? "Administrator" : "Client"}</p>
               <button onClick={logout} className="text-red-500 mt-4">
@@ -89,8 +89,8 @@ export default function Login() {
                   id="email"
                   type="text"
                   placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={mail}
+                  onChange={(e) => setmail(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -113,7 +113,7 @@ export default function Login() {
               <button
                 className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="button"
-                onClick={handleLogin}
+                onClick={handleLoginSubmit}
               >
                 Iniciar Sesión
               </button>
@@ -123,7 +123,7 @@ export default function Login() {
               <div className="text-center mt-4">
                 <p>
                   ¿Todavía no tienes una cuenta?{" "}
-                  <a href="#" className="text-blue-400">
+                  <a href="#" onClick={goRegister} className="text-blue-400">
                     Crea una ahora
                   </a>
                 </p>

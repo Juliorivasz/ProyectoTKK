@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/prop-types */
 import { createContext, useState, useContext, useEffect } from "react";
 
 // Crear el contexto de usuario
@@ -11,6 +13,10 @@ export function UserProvider({ children }) {
     // Verificar si hay un usuario en localStorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedTimestamp = localStorage.getItem("timestamp");
+
+    if (!storedUser) {
+      setUser(null); // Asegúrate de que el valor sea null si no hay usuario
+    }
 
     if (storedUser && storedTimestamp) {
       const now = new Date().getTime();
@@ -27,10 +33,16 @@ export function UserProvider({ children }) {
   }, []);
 
   const login = (userData) => {
-    setUser(userData); // Almacena el usuario al hacer login
-    localStorage.setItem("user", JSON.stringify(userData)); // Guarda en localStorage
-    localStorage.setItem("timestamp", new Date().getTime()); // Guarda el timestamp
+    if (userData) {
+      console.log(userData)
+      setUser(userData); // Almacena el usuario al hacer login
+      localStorage.setItem("user", JSON.stringify(userData)); // Guarda en localStorage
+      localStorage.setItem("timestamp", new Date().getTime()); // Guarda el timestamp
+    } else {
+      console.error("Error: userData es undefined o null");
+    }
   };
+  
 
   const logout = () => {
     setUser(null); // Borra el usuario al hacer logout
