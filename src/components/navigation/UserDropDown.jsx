@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
 import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const UserDropDown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -11,6 +13,11 @@ const UserDropDown = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleAddressesClick = () => {
+    handleClose();
+    navigate('/direcciones'); // Cambia '/direcciones' a la ruta que desees
   };
 
   return (
@@ -42,7 +49,7 @@ const UserDropDown = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Perfil</MenuItem>
-        <MenuItem onClick={handleClose}>Direcciones</MenuItem>
+        <MenuItem onClick={handleAddressesClick}>Direcciones</MenuItem>
         <MenuItem onClick={handleClose}>Cerrar sesión</MenuItem>
       </Menu>
     </div>
