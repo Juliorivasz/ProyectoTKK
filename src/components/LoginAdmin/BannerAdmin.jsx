@@ -1,16 +1,15 @@
-import bannerImage from "/images/banner.png"
-import './banner.css'
+import bannerImage from "../../assets/images/theKrustyKrab.jpg";
 
-export default function Banner() {
+export default function BannerAdmin() {
     return (
-        <div className='banner'>
-            <div>
-                <h3 className='banner-top-title'>
+        <div className='relative'>
+            <div className='absolute top-0 left-0 p-4'>
+                <h3 className='text-2xl font-bold text-white'>
                     Bienvenido, Administrador
                 </h3>
             </div>
             <img
-                className='banner-img'
+                className='w-full h-auto'
                 src={bannerImage} alt="banner image bob esponja" />
         </div>
     )
