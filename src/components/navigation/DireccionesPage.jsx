@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Typography, Button, TextField, List, ListItem, ListItemText,
   IconButton, Dialog, DialogActions, DialogContent, DialogTitle
@@ -10,6 +10,17 @@ const DireccionesPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentAddress, setCurrentAddress] = useState('');
   const [editIndex, setEditIndex] = useState(null);
+
+  // Cargar direcciones desde localStorage al cargar el componente
+  useEffect(() => {
+    const savedAddresses = JSON.parse(localStorage.getItem('addresses')) || [];
+    setAddresses(savedAddresses);
+  }, []);
+
+  // Guardar direcciones en localStorage cuando cambian
+  useEffect(() => {
+    localStorage.setItem('addresses', JSON.stringify(addresses));
+  }, [addresses]);
 
   const handleAddAddress = () => {
     if (editIndex !== null) {
