@@ -1,5 +1,6 @@
 import { useUser } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
+import NavbarAdmin from "../LoginAdmin/NavbarAdmin";
 
 export default function LayoutAdmin({ children }) {
   const { user, logout } = useUser();
@@ -16,26 +17,13 @@ export default function LayoutAdmin({ children }) {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <aside className="w-64 bg-white shadow-md">
-        <div className="p-4">
-          <h2 className="text-xl font-semibold">Admin Panel</h2>
+    <div className="flex flex-col min-h-screen bg-[#cde8e5]">
+      <NavbarAdmin handleLogout={handleLogout} userEmail={user.email} />
+      <main className="min-w-screen flex-grow pt-16">
+        <div className="container mx-auto p-8">
+          {children}
+          <Outlet /> {/* Este es el lugar donde se renderizarán los componentes anidados */}
         </div>
-        <nav className="mt-4">
-          {/* Aquí puedes agregar los enlaces de navegación para el admin */}
-        </nav>
-      </aside>
-      <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Welcome, {user.email}</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Logout
-          </button>
-        </header>
-        {children}
       </main>
     </div>
   );

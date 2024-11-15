@@ -23,7 +23,14 @@ export const RegisterUser = () => {
     e.preventDefault();
     setError("");
 
-    if (!nombre || !apellido || !email || !telefono || !password || !confirmPassword) {
+    if (
+      !nombre ||
+      !apellido ||
+      !email ||
+      !telefono ||
+      !password ||
+      !confirmPassword
+    ) {
       setError("Todos los campos son obligatorios.");
       return;
     }
@@ -34,7 +41,13 @@ export const RegisterUser = () => {
     }
 
     try {
-      const newUser = await handleRegisterClient(nombre, apellido, email, telefono, password);
+      const newUser = await handleRegisterClient(
+        nombre,
+        apellido,
+        email,
+        telefono,
+        password
+      );
       if (!newUser) throw new Error("Fallo el registro");
 
       login(newUser);
@@ -67,7 +80,9 @@ export const RegisterUser = () => {
             <img src={logo} alt="Logo" className="w-24 h-24" />
           </div>
           <form onSubmit={handleRegister}>
-            <h2 className="text-2xl font-bold mb-6 text-center">Registro de Usuario</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Registro de Usuario
+            </h2>
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2">Nombre</label>
               <input
@@ -118,14 +133,20 @@ export const RegisterUser = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
               />
               <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                className="absolute top-[50%] right-3 flex items-center cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+                {showPassword ? (
+                  <AiFillEyeInvisible size={30} color="black" />
+                ) : (
+                  <AiFillEye size={30} color="black" />
+                )}
               </div>
             </div>
             <div className="mb-6 relative">
-              <label className="block text-sm font-bold mb-2">Confirm Password</label>
+              <label className="block text-sm font-bold mb-2">
+                Confirm Password
+              </label>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
@@ -134,13 +155,19 @@ export const RegisterUser = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
               />
               <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                className="absolute top-[50%] right-3 flex items-center cursor-pointer"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                {showConfirmPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+                {showConfirmPassword ? (
+                  <AiFillEyeInvisible size={30} color="black" />
+                ) : (
+                  <AiFillEye size={30} color="black" />
+                )}
               </div>
             </div>
-            {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-xs italic mb-4">{error}</p>
+            )}
             <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -153,11 +180,3 @@ export const RegisterUser = () => {
     </div>
   );
 };
-
-
-
-
-
-
-
-

@@ -44,6 +44,10 @@ export default function Login() {
     navigate("/register");
   };
 
+  const goAdmin = () => {
+    navigate("/auth/loginadmin");
+  }
+
   return (
     <div className="relative w-full h-screen">
       <div
@@ -114,7 +118,7 @@ export default function Login() {
                 Iniciar Sesión
               </button>
               <div className="flex items-center justify-center mt-2">
-                <button className="text-blue-400 text-sm">Soy Administrador</button>
+                <button className="text-blue-400 text-sm" onClick={goAdmin}>Soy Administrador</button>
               </div>
               <div className="text-center mt-4">
                 <p>

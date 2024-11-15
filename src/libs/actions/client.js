@@ -20,11 +20,11 @@ const getErrorMessage = (statusCode) => {
   }
 };
 
-export const handleRegisterClient = async (nombre, apellido, mail, telefono, password) => {
+export const handleRegisterClient = async (nombre, apellido, email, telefono, password) => {
   const datosClientes = {
     nombre,
     apellido,
-    mail,
+    email,
     telefono,
     password
   };
