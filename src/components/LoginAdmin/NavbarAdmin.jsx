@@ -16,6 +16,7 @@ export default function Navbar() {
                 <Link>Inicio</Link>
                 <Link>Administración Contable</Link>
                 <Link>Agregar Producto</Link>
+                <Link>Modificar Producto</Link>
             </div>
 
             {/* Avatar User */}
