@@ -62,8 +62,7 @@ export default function LoginAdmin() {
   }
 
   return (
-    <Layout>
-      <div className="w-full h-screen justify-center items-center flex">
+      <div className="w-full h-screen justify-center items-center flex bg-cyan-50">
         <div className="w-full max-w-xs">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 className="text-2xl font-bold mb-6 text-center">Admin Login</h2>
@@ -104,9 +103,7 @@ export default function LoginAdmin() {
               </button>
             </div>
           </form>
-          <p className="text-center text-gray-500 text-xs">&copy;2020 Acme Corp. All rights reserved.</p>
         </div>
       </div>
-    </Layout>
   );
 }

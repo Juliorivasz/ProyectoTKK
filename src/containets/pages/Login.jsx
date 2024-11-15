@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Layout from "../../components/layouts/Layout";
 import { useUser } from "../../context/UserContext";
 import fondo from "../../../src/assets/images/theKrustyKrab.jpg";
 import logo from "../../../public/images/TKK.svg";
@@ -22,6 +21,9 @@ const users = [
     isAdmin: false,
   },
 ];
+
+
+
 export default function Login() {
   const { user, login, logout } = useUser();
   const [email, setEmail] = useState("");
@@ -29,6 +31,9 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const goAdmin =() => {
+    navigate("/auth/loginadmin")
+  }
   const handleLogin = () => {
     const foundUser = users.find(
       (u) => u.email === email && u.password === password
@@ -113,7 +118,7 @@ export default function Login() {
                 Iniciar Sesión
               </button>
               <div className="flex items-center justify-center mt-2">
-                <button className="text-blue-400 text-sm">Soy Administrador</button>
+                <button className="text-blue-400 text-sm" onClick={goAdmin}>Soy Administrador</button>
               </div>
               <div className="text-center mt-4">
                 <p>
