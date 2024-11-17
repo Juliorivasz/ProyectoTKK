@@ -3,6 +3,163 @@ import fondo from "../../../../assets/images/theKrustyKrab.jpg";
 import Swal from "sweetalert2";
 
 export default function RecargarStock({ onNavigate }) {
+    const [stockItems, setStockItems] = useState([{ nombreMateriaPrima: "", cantidad: "" }]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const materiasPrimas = [
+        "Medallon de carne", "Tomate", "Queso cheddar", "Papa", "Lechuga", "Pan", "Bacon",
+        "Huevo", "Cebolla", "Cocacola", "Sprite", "Fanta", "Agua saborizada", "Agua con gas",
+        "Agua sin gas", "Masa Pizza", "Salsa de tomate", "Queso Mozzarela", "Empanada de carne",
+        "Doritos", "Papas lays", "Conitos 3D", "Pote Helado 1kg", "Pote Helado 1/2kg"
+    ];
+
+    const handleItemChange = (index, field, value) => {
+        const newItems = [...stockItems];
+        newItems[index][field] = value;
+        setStockItems(newItems);
+    };
+
+    const addItem = () => {
+        setStockItems([...stockItems, { nombreMateriaPrima: "", cantidad: "" }]);
+    };
+
+    const removeItem = (index) => {
+        const newItems = stockItems.filter((_, i) => i !== index);
+        setStockItems(newItems);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const payload = {
+            carga: stockItems.map(item => ({
+                nombreMateriaPrima: item.nombreMateriaPrima,
+                cantidad: parseFloat(item.cantidad),
+            })),
+        };
+
+        try {
+            const response = await fetch("http://localhost:8080/materiaPrima/carga", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const data = await response.text();
+            Swal.fire({
+                icon: "success",
+                title: "Stock actualizado",
+                text: `Carga realizada exitosamente: ${data}`,
+            });
+            setStockItems([{ nombreMateriaPrima: "", cantidad: "" }]);
+        } catch (err) {
+            Swal.fire({
+                icon: "error",
+                title: "Error al actualizar",
+                text: `No se pudo cargar el stock: ${err.message}`,
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="relative flex justify-center items-center min-h-screen py-8">
+            <div
+                className="absolute inset-0"
+                style={{
+                    backgroundImage: `url(${fondo})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    filter: "blur(5px)",
+                    opacity: 0.5,
+                    zIndex: -1,
+                }}
+            ></div>
+
+            <div className="absolute top-4 right-4">
+                <button
+                    type="button"
+                    onClick={() => onNavigate("modificarCosto")}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 shadow"
+                >
+                    Ir a Modificar Precio
+                </button>
+            </div>
+
+            <form
+                className="relative bg-blue-100 bg-opacity-90 shadow-md rounded p-6 w-96 z-10"
+                onSubmit={handleSubmit}
+            >
+                <h2 className="text-xl font-bold mb-4">Actualizar Stock</h2>
+
+                {stockItems.map((item, index) => (
+                    <div key={index} className="mb-4">
+                        <select
+                            className="border p-2 mb-2 w-full"
+                            value={item.nombreMateriaPrima}
+                            onChange={(e) => handleItemChange(index, "nombreMateriaPrima", e.target.value)}
+                            required
+                        >
+                            <option value="">Seleccione una materia prima</option>
+                            {materiasPrimas.map((materia) => (
+                                <option key={materia} value={materia}>{materia}</option>
+                            ))}
+                        </select>
+
+                        <input
+                            type="number"
+                            placeholder="Stock en Kg"
+                            className="border p-2 mb-2 w-full"
+                            value={item.cantidad}
+                            onChange={(e) => handleItemChange(index, "cantidad", e.target.value)}
+                            required
+                        />
+
+                        {index > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => removeItem(index)}
+                                className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 text-sm"
+                            >
+                                Eliminar
+                            </button>
+                        )}
+                    </div>
+                ))}
+
+                <button
+                    type="button"
+                    onClick={addItem}
+                    className="bg-blue-500 text-white py-2 px-4 rounded w-full hover:bg-blue-600 mb-4"
+                >
+                    Agregar otra materia prima
+                </button>
+
+                <button
+                    type="submit"
+                    className="bg-green-500 text-white py-2 px-4 rounded w-full hover:bg-green-600 mb-4"
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? "Cargando..." : "Confirmar"}
+                </button>
+            </form>
+        </div>
+    );
+}
+/*
+import { useState } from "react";
+import fondo from "../../../../assets/images/theKrustyKrab.jpg";
+import Swal from "sweetalert2";
+
+export default function RecargarStock({ onNavigate }) {
     const [selectedItem, setSelectedItem] = useState("");
     const [newStock, setNewStock] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -63,7 +220,7 @@ export default function RecargarStock({ onNavigate }) {
 
     return (
         <div className="relative flex justify-center items-center h-screen">
-            {/* Fondo con imagen y opacidad */}
+            {/* Fondo con imagen y opacidad}
             <div
                 className="absolute inset-0"
                 style={{
@@ -76,7 +233,7 @@ export default function RecargarStock({ onNavigate }) {
                 }}
             ></div>
 
-            {/* Botón para navegar a Modificar Costo */}
+            {/* Botón para navegar a Modificar Costo }
             <div className="absolute top-4 right-4">
                 <button
                     type="button"
@@ -87,7 +244,7 @@ export default function RecargarStock({ onNavigate }) {
                 </button>
             </div>
 
-            {/* Formulario */}
+            {/* Formulario }
             <form
                 className="relative bg-blue-100 bg-opacity-90 shadow-md rounded p-6 w-80 z-10"
                 onSubmit={handleSubmit}
@@ -126,4 +283,4 @@ export default function RecargarStock({ onNavigate }) {
         </div>
     );
 }
-
+*/

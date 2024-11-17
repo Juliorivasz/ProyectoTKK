@@ -16,14 +16,14 @@ import {
 export default function LibroMayor() {
   const cuentas = [
     { 
-      nombre: 'Caja', 
+      nombre: 'Caja',
       entradas: [
-        { debe: 1000, haber: null },
-        { debe: null, haber: 500 },
+        { debe: 5000, haber: null },
+        { debe: null, haber: 2000 },
       ]
     },
     { 
-      nombre: 'Banco', 
+      nombre: 'Banco',
       entradas: [
         { debe: 10000, haber: null },
         { debe: 20000, haber: null },
@@ -31,60 +31,75 @@ export default function LibroMayor() {
       ]
     },
     { 
-      nombre: 'Proveedores', 
+      nombre: 'Mercadería',
       entradas: [
-        { debe: 500, haber: null },
-        { debe: null, haber: 1500 },
+        { debe: 15000, haber: null },
+        { debe: null, haber: 5000 },
       ]
     },
     { 
-      nombre: 'Mercadería', 
+      nombre: 'Proveedores',
       entradas: [
         { debe: 3000, haber: null },
-        { debe: null, haber: 1000 },
+        { debe: null, haber: 8000 },
       ]
     },
   ];
 
+  const calcularTotal = (cuenta) => {
+    const totalDebe = cuenta.entradas.reduce((sum, entrada) => sum + (entrada.debe || 0), 0);
+    const totalHaber = cuenta.entradas.reduce((sum, entrada) => sum + (entrada.haber || 0), 0);
+    return { debe: totalDebe, haber: totalHaber, saldo: Math.abs(totalDebe - totalHaber) };
+  };
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f0f0f0', padding: '20px' }}>
-      <div style={{ maxWidth: '600px', margin: 'auto' }}>
-        {cuentas.map((cuenta, index) => (
-          <Card key={index} style={{ marginBottom: '20px' }}>
-            <CardHeader
-              title={<Typography variant="h6" align="center">{cuenta.nombre}</Typography>}
-            />
-            <CardContent>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="center" style={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Debe</TableCell>
-                      <TableCell align="center" style={{ fontWeight: 'bold' }}>Haber</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
+    <div className="min-h-screen bg-gray-100 p-5">
+      <div className="mx-auto max-w-4xl space-y-6">
+        {cuentas.map((cuenta, index) => {
+          const total = calcularTotal(cuenta);
+          return (
+            <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <div className="border-b p-4">
+                <h2 className="text-center text-lg font-medium">{cuenta.nombre}</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="divide-x divide-gray-200">
+                      <th className="text-center font-medium p-2 bg-gray-50 w-1/2">Debe</th>
+                      <th className="text-center font-medium p-2 bg-gray-50 w-1/2">Haber</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {cuenta.entradas.map((entrada, entradaIndex) => (
-                      <TableRow key={entradaIndex}>
-                        <TableCell align="right" style={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                          {entrada.debe ? `$${entrada.debe.toFixed(2)}` : ''}
-                        </TableCell>
-                        <TableCell align="right">
-                          {entrada.haber ? `$${entrada.haber.toFixed(2)}` : ''}
-                        </TableCell>
-                      </TableRow>
+                      <tr key={entradaIndex} className="divide-x divide-gray-200">
+                        <td className="text-right p-2">
+                          {entrada.debe ? `$${entrada.debe.toLocaleString()}` : ""}
+                        </td>
+                        <td className="text-right p-2">
+                          {entrada.haber ? `$${entrada.haber.toLocaleString()}` : ""}
+                        </td>
+                      </tr>
                     ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </CardContent>
-          </Card>
-        ))}
+                    <tr className="divide-x divide-gray-200 bg-gray-100 font-semibold">
+                      <td className="text-right p-2">${total.debe.toLocaleString()}</td>
+                      <td className="text-right p-2">${total.haber.toLocaleString()}</td>
+                    </tr>
+                    <tr className="bg-gray-200 font-semibold">
+                      <td colSpan={2} className="text-right p-2">
+                        Saldo: ${total.saldo.toLocaleString()} {total.debe > total.haber ? 'Deudor' : 'Acreedor'}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
-
 /*
 import { Card, 
   CardContent,
