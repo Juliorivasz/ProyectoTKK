@@ -8,7 +8,6 @@ export default function ProductsByCategory() {
   useEffect(() => {
     async function fetchProducts() {
       const data = await getProducts(); // Ahora no pasamos 'category', solo obtenemos todos los productos
-      console.log(data);
       setProducts(data.precios || []); // Asegúrate de acceder a la propiedad 'precios'
     }
 

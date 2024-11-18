@@ -52,7 +52,7 @@ export const RegisterUser = () => {
 
       login(newUser);
       localStorage.setItem("user", JSON.stringify(newUser));
-      navigate("/");
+      navigate("/"); // Redirige al inicio
     } catch (error) {
       setError(
         error.message === "Email ya registrado"
@@ -62,6 +62,11 @@ export const RegisterUser = () => {
       localStorage.setItem("user", JSON.stringify(null));
       login(null);
     }
+  };
+
+  // Función para ir al inicio sin registrarse
+  const goBackToHome = () => {
+    navigate("/"); // Redirige a la página principal
   };
 
   return (
@@ -175,8 +180,17 @@ export const RegisterUser = () => {
               Registrarse
             </button>
           </form>
+          <div className="text-center mt-4">
+            <button
+              onClick={goBackToHome}
+              className="text-blue-400 text-sm"
+            >
+              Volver al inicio
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+

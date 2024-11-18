@@ -5,6 +5,10 @@ import LoginAdmin from "../components/LoginAdmin/LoginAdmin";
 import LayoutAdmin from "../components/layouts/LayoutAdmin";
 import GestionContable from "../components/LoginAdmin/GestionContable"; // Importa el componente de gestión contable
 import Inventario from "../components/LoginAdmin/Inventario"; // Importa el componente de inventario
+import ProtectedRoute from "./ProtectedRoute";
+import StepperPay from "../containets/pages/cart/StepperPay";
+import SuccessMessage from "../containets/pages/cart/SucessMessage";
+import Layout from "../components/layouts/Layout";
 
 const AuthRoutes = () => {
   const { user } = useUser();
@@ -12,6 +16,8 @@ const AuthRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/carrito" element={<ProtectedRoute><StepperPay /></ProtectedRoute>} />
+      <Route path="/eureka" element={<Layout><SuccessMessage /></Layout>} />
       <Route path="/loginadmin" element={<LoginAdmin />} /> {/* Ruta para login admin */}
       {/* Si el usuario es admin, muestra LayoutAdmin, de lo contrario redirige a loginadmin */}
       <Route
