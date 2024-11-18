@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { handleLogin } from "../../libs/actions/client"; 
@@ -46,7 +46,12 @@ export default function Login() {
 
   const goAdmin = () => {
     navigate("/auth/loginadmin");
-  }
+  };
+
+  // Función para redirigir al inicio
+  const goHome = () => {
+    navigate("/"); // Redirige a la página principal
+  };
 
   return (
     <div className="relative w-full h-screen">
@@ -127,6 +132,15 @@ export default function Login() {
                     Crea una ahora
                   </a>
                 </p>
+              </div>
+              {/* Botón para redirigir al inicio */}
+              <div className="text-center mt-4">
+                <button
+                  onClick={goHome}
+                  className="text-blue-400"
+                >
+                  Volver al inicio
+                </button>
               </div>
             </form>
           )}

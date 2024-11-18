@@ -1,40 +1,46 @@
 /* eslint-disable react/prop-types */
-import Swal from 'sweetalert2'; // Asegúrate de tener SweetAlert2 instalado
-import { FaShoppingCart } from 'react-icons/fa'; // Importa el ícono del carrito
-import { useState } from 'react';
+import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
+import { useState } from "react";
+import { useCart } from "../../context/CartContext"; // Importa el contexto del carrito
+import { useUser } from "../../context/UserContext";
 
 export default function ProductCard({ product }) {
-  const [quantity, setQuantity] = useState(0); // Estado para manejar la cantidad seleccionada
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart(); // Usa el hook del contexto del carrito
+  const { user } = useUser(); // Verifica si el usuario está autenticado
 
-  // Función para agregar el producto al carrito
   const handleAddToCart = () => {
-    // Obtener el carrito actual desde localStorage o crear uno vacío si no existe
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Verificar si el producto ya existe en el carrito
-    const productExists = cart.some(item => item.id === product.id);
-
-    if (productExists) {
-      // Si el producto ya está en el carrito, actualizar la cantidad
-      const updatedCart = cart.map(item => 
-        item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-      );
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-    } else {
-      // Si el producto no está en el carrito, agregarlo con la cantidad seleccionada
-      cart.push({ ...product, quantity });
-
-      // Guardar el carrito actualizado en localStorage
-      localStorage.setItem('cart', JSON.stringify(cart));
+    if (!user) {
+      Swal.fire({
+        icon: "warning",
+        title: "¡Debes iniciar sesión!",
+        text: "Por favor, inicia sesión para agregar productos al carrito.",
+        confirmButtonText: "Aceptar",
+      });
+      return;
     }
 
-    // Mostrar alerta de éxito
+    if (quantity < 1) {
+      Swal.fire({
+        icon: "error",
+        title: "Cantidad inválida",
+        text: "La cantidad debe ser al menos 1.",
+        confirmButtonText: "Aceptar",
+      });
+      return;
+    }
+
+    addToCart(product, quantity);
+
     Swal.fire({
-      icon: 'success',
-      title: '¡Producto agregado al carrito!',
+      icon: "success",
+      title: "¡Producto agregado al carrito!",
       text: `${product.nombreProducto} ha sido añadido a tu carrito.`,
-      confirmButtonText: 'Aceptar',
+      confirmButtonText: "Aceptar",
     });
+
+    setQuantity(1);
   };
 
   return (
@@ -53,9 +59,10 @@ export default function ProductCard({ product }) {
         </h1>
         <p className="text-sm text-gray-600 mb-4">{product.descripcion}</p>
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-bold text-green-500">${product.precio}</h3>
+          <h3 className="text-lg font-bold text-green-500">
+            ${product.precio}
+          </h3>
 
-          {/* Selector de cantidad */}
           <div className="flex items-center space-x-2">
             <input
               type="number"
@@ -76,8 +83,3 @@ export default function ProductCard({ product }) {
     </div>
   );
 }
-
-
-
-
-

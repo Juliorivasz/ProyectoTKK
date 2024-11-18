@@ -51,8 +51,15 @@ export const handleRegisterClient = async (nombre, apellido, email, telefono, pa
       return;
     }
 
+    
     const data = await response.text();
+    
+    const dataUser = {
+      email: email,
+      status: data
+    }
 
+    console.log('desde registro: ', dataUser)
     // Modal de éxito
     Swal.fire({
       icon: 'success',
@@ -61,7 +68,7 @@ export const handleRegisterClient = async (nombre, apellido, email, telefono, pa
       confirmButtonText: 'Aceptar',
       timer: 3000
     });
-    return data;
+    return dataUser;
 
   } catch (error) {
     // Modal de error en caso de problemas de red u otros errores no capturados
@@ -107,8 +114,14 @@ export const handleLogin = async (email, password) => {
 
     const data = await response.json();  // Suponiendo que la respuesta es un JSON con los datos del usuario
 
+    // tiene el email del usuario logueado y la respuesta de la peticion
+    const dataUser = {
+      email: email,
+      status: JSON.stringify(data)
+    }
+    
     // Guardamos el usuario en el localStorage
-    localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('user', dataUser);
 
     // Modal de éxito
     Swal.fire({
@@ -119,7 +132,7 @@ export const handleLogin = async (email, password) => {
       timer: 3000
     });
 
-    return data;
+    return dataUser;
 
   } catch (error) {
     // Modal de error en caso de problemas de red u otros errores no capturados
