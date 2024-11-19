@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import Swal from "sweetalert2";
-import fondo from "../../../../assets/images/theKrustyKrab.jpg"; // Asegúrate de que esta ruta sea correcta
+import { Button, Select, MenuItem, InputLabel, FormControl, TextField, CircularProgress } from '@mui/material';
 
 export default function ModificarCosto({ onNavigate }) {
     const [selectedItem, setSelectedItem] = useState("");
@@ -57,69 +59,66 @@ export default function ModificarCosto({ onNavigate }) {
     ];
 
     return (
-        <div className="relative flex justify-center items-center h-screen">
-            {/* Fondo con imagen y opacidad */}
-            <div
-                className="absolute inset-0"
-                style={{
-                    backgroundImage: `url(${fondo})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: "blur(5px)",
-                    opacity: 0.5,
-                    zIndex: -1,
-                }}
-            ></div>
-
+        <div className="relative flex justify-center items-center h-screen mt-32">
             {/* Botón para navegar en la esquina superior derecha */}
-            <div className="absolute top-4 right-4">
-                <button
-                    type="button"
+            <div className="absolute top-[20%] right-4 z-10">
+                <Button
+                    variant="contained"
+                    color="primary"
                     onClick={() => onNavigate("recargarStock")}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 shadow"
+                    sx={{ boxShadow: 3 }}
                 >
                     Ir a Actualizar Stock
-                </button>
+                </Button>
             </div>
 
             {/* Formulario en el frente */}
             <form
-                className="relative bg-blue-100 bg-opacity-90 shadow-md rounded p-6 w-80 z-10"
+                className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-96 z-10"
                 onSubmit={handleSubmit}
+                style={{ backdropFilter: "blur(10px)" }}
             >
-                <h2 className="text-xl font-bold mb-4">Modificar Precio</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-center">Modificar Costo</h2>
 
-                <select
-                    className="border p-2 mb-4 w-full"
-                    value={selectedItem}
-                    onChange={handleItemChange}
-                    required
-                >
-                    <option value="" disabled>Seleccione una materia prima</option>
-                    {materiasPrimas.map((item) => (
-                        <option key={item} value={item}>{item}</option>
-                    ))}
-                </select>
+                <FormControl fullWidth margin="normal">
+                    <InputLabel id="materia-prima-label">Seleccione una materia prima</InputLabel>
+                    <Select
+                        labelId="materia-prima-label"
+                        value={selectedItem}
+                        onChange={handleItemChange}
+                        label="Seleccione una materia prima"
+                        required
+                    >
+                        {materiasPrimas.map((item) => (
+                            <MenuItem key={item} value={item}>
+                                {item}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <input
+                <TextField
+                    label="Nuevo Costo"
                     type="number"
-                    placeholder="Precio nuevo"
-                    className="border p-2 mb-4 w-full"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
                     value={newCost}
                     onChange={handleCostChange}
                     required
                 />
 
-                <button
+                <Button
                     type="submit"
-                    className="bg-green-500 text-white py-2 px-4 rounded w-full hover:bg-green-600 mb-4"
+                    variant="contained"
+                    color="success"
+                    fullWidth
                     disabled={isSubmitting}
+                    sx={{ mt: 4 }}
                 >
-                    {isSubmitting ? "Guardando..." : "Confirmar"}
-                </button>
+                    {isSubmitting ? <CircularProgress size={24} /> : "Confirmar"}
+                </Button>
             </form>
         </div>
     );
 }
-
-

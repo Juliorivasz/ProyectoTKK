@@ -66,7 +66,7 @@ export const RegisterUser = () => {
 
   // Función para ir al inicio sin registrarse
   const goBackToHome = () => {
-    navigate("/"); // Redirige a la página principal
+    navigate("/auth/login"); // Redirige a la página principal
   };
 
   return (
@@ -185,7 +185,7 @@ export const RegisterUser = () => {
               onClick={goBackToHome}
               className="text-blue-400 text-sm"
             >
-              Volver al inicio
+              Ir a iniciar sesion
             </button>
           </div>
         </div>

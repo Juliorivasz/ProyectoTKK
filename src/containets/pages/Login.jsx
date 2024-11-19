@@ -6,7 +6,7 @@ import fondo from "../../../src/assets/images/theKrustyKrab.jpg";
 import logo from "/images/TKK.svg";
 
 export default function Login() {
-  const { user, login, logout } = useUser();
+  const { user, login } = useUser();
   const [mail, setmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,20 +15,22 @@ export default function Login() {
   // Revisa si el usuario está almacenado en localStorage cuando el componente se monta
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
+    if (savedUser?.role === "client" || user?.role === "client") {
       login(JSON.parse(savedUser)); // Recupera al usuario del localStorage
       navigate("/"); // Redirige al usuario si ya está logueado
     }
-  }, [login, navigate]);
+  }, [login, navigate, user]);
 
   // Función de login actualizada
-  const handleLoginSubmit = async () => {
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
     try {
       // Llamamos al método handleLogin que realiza la solicitud al backend
       const data = await handleLogin(mail, password);
+      console.log(data)
 
       if (data) {
-        login(data); // Almacena los datos del usuario en el contexto
+        login({email: data.email, role: "client"}); // Almacena los datos del usuario en el contexto
         setError("");
         navigate("/"); // Redirige al usuario a la página principal
       } else {
@@ -68,22 +70,6 @@ export default function Login() {
           <div className="flex justify-center mb-6">
             <img src={logo} alt="Logo" className="w-24 h-24" />
           </div>
-          {user ? (
-            <div className="text-center">
-              <img
-                src={user.thumbnail}
-                alt="User Thumbnail"
-                className="rounded-full w-16 h-16 mb-4 mx-auto"
-              />
-              <h2 className="text-lg font-bold">
-                Welcome, {user.mail} ({user.role})
-              </h2>
-              <p>{user.isAdmin ? "Administrator" : "Client"}</p>
-              <button onClick={logout} className="text-red-500 mt-4">
-                Logout
-              </button>
-            </div>
-          ) : (
             <form>
               <div className="mb-4">
                 <label className="block text-sm font-bold mb-2" htmlFor="email">
@@ -117,7 +103,7 @@ export default function Login() {
               </div>
               <button
                 className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
+                type="submit"
                 onClick={handleLoginSubmit}
               >
                 Iniciar Sesión
@@ -128,9 +114,9 @@ export default function Login() {
               <div className="text-center mt-4">
                 <p>
                   ¿Todavía no tienes una cuenta?{" "}
-                  <a href="#" onClick={goRegister} className="text-blue-400">
+                  <button onClick={goRegister} className="text-blue-400">
                     Crea una ahora
-                  </a>
+                  </button>
                 </p>
               </div>
               {/* Botón para redirigir al inicio */}
@@ -143,7 +129,6 @@ export default function Login() {
                 </button>
               </div>
             </form>
-          )}
         </div>
       </div>
     </div>

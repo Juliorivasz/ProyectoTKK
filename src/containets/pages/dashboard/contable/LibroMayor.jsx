@@ -1,158 +1,78 @@
-import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 
-export default function LibroMayor() {
-  const cuentas = [
-    { 
-      nombre: 'Caja',
-      entradas: [
-        { debe: 5000, haber: null },
-        { debe: null, haber: 2000 },
-      ]
-    },
-    { 
-      nombre: 'Banco',
-      entradas: [
-        { debe: 10000, haber: null },
-        { debe: 20000, haber: null },
-        { debe: null, haber: 15000 },
-      ]
-    },
-    { 
-      nombre: 'Mercadería',
-      entradas: [
-        { debe: 15000, haber: null },
-        { debe: null, haber: 5000 },
-      ]
-    },
-    { 
-      nombre: 'Proveedores',
-      entradas: [
-        { debe: 3000, haber: null },
-        { debe: null, haber: 8000 },
-      ]
-    },
-  ];
+export default function LibroMayor({ filters }) {
+  const [libroMayor, setLibroMayor] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const calcularTotal = (cuenta) => {
-    const totalDebe = cuenta.entradas.reduce((sum, entrada) => sum + (entrada.debe || 0), 0);
-    const totalHaber = cuenta.entradas.reduce((sum, entrada) => sum + (entrada.haber || 0), 0);
-    return { debe: totalDebe, haber: totalHaber, saldo: Math.abs(totalDebe - totalHaber) };
+  // Función para cargar datos del libro mayor
+  const fetchLibroMayor = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("http://localhost:8080/administrador/libroMayor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombreCuenta: filters.nombreCuenta,
+          fechaInicio: filters.fechaInicio,
+          fechaCierre: filters.fechaCierre,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos");
+      }
+
+      const data = await response.json();
+      setLibroMayor(data.registros || []);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchLibroMayor();
+  }, [filters]);
+
   return (
-    <div className="min-h-screen bg-gray-100 p-5">
-      <div className="mx-auto max-w-4xl space-y-6">
-        {cuentas.map((cuenta, index) => {
-          const total = calcularTotal(cuenta);
-          return (
-            <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
-              <div className="border-b p-4">
-                <h2 className="text-center text-lg font-medium">{cuenta.nombre}</h2>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="divide-x divide-gray-200">
-                      <th className="text-center font-medium p-2 bg-gray-50 w-1/2">Debe</th>
-                      <th className="text-center font-medium p-2 bg-gray-50 w-1/2">Haber</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cuenta.entradas.map((entrada, entradaIndex) => (
-                      <tr key={entradaIndex} className="divide-x divide-gray-200">
-                        <td className="text-right p-2">
-                          {entrada.debe ? `$${entrada.debe.toLocaleString()}` : ""}
-                        </td>
-                        <td className="text-right p-2">
-                          {entrada.haber ? `$${entrada.haber.toLocaleString()}` : ""}
-                        </td>
-                      </tr>
-                    ))}
-                    <tr className="divide-x divide-gray-200 bg-gray-100 font-semibold">
-                      <td className="text-right p-2">${total.debe.toLocaleString()}</td>
-                      <td className="text-right p-2">${total.haber.toLocaleString()}</td>
-                    </tr>
-                    <tr className="bg-gray-200 font-semibold">
-                      <td colSpan={2} className="text-right p-2">
-                        Saldo: ${total.saldo.toLocaleString()} {total.debe > total.haber ? 'Deudor' : 'Acreedor'}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      {loading ? (
+        <p className="text-center text-gray-600">Cargando...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">Error: {error}</p>
+      ) : libroMayor.length === 0 ? (
+        <p className="text-center text-gray-600">No hay registros en el Libro Mayor.</p>
+      ) : (
+        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+          <table className="min-w-full table-auto border-collapse">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="py-2 px-4 text-left border-b border-black">Fecha</th>
+                <th className="py-2 px-4 text-left border-b border-black">Nombre de Cuenta</th>
+                <th className="py-2 px-4 text-left border-b border-black">Debe</th>
+                <th className="py-2 px-4 text-left border-b border-black">Haber</th>
+              </tr>
+            </thead>
+            <tbody>
+              {libroMayor.map((entrada, index) => (
+                <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                  <td className="py-2 px-4 border-b border-black">{entrada.fecha}</td>
+                  <td className="py-2 px-4 border-b border-black">{entrada.nombre_cuenta}</td>
+                  <td className="py-2 px-4 border-b border-black">{entrada.debe}</td>
+                  <td className="py-2 px-4 border-b border-black">{entrada.haber}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
-/*
-import { Card, 
-  CardContent,
-  CardHeader, 
-  Typography, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Paper } from '@mui/material';
-
-export default function LibroMayor() {
-  const cuentas = [
-    { nombre: 'Caja', entradas: [{ debe: 1000, haber: 500 }] },
-    { nombre: 'Banco', entradas: [{ debe: 2000, haber: 1000 }] },
-    { nombre: 'Proveedores', entradas: [{ debe: 500, haber: 1500 }] },
-    { nombre: 'Mercadería', entradas: [{ debe: 3000, haber: 1000 }] },
-  ];
-
-  return (
-    <div className="min-h-screen bg-[#cde8e5] p-5">
-      <div className="mx-auto max-w-4xl space-y-6">
-        {cuentas.map((cuenta) => (
-          <Card component={Paper} key={cuenta.nombre}>
-            <CardHeader
-              title={<Typography variant="h6">{cuenta.nombre}</Typography>}
-            />
-            <CardContent>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Debe</TableCell>
-                      <TableCell>Haber</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {cuenta.entradas.map((entrada, index) => (
-                      <TableRow key={index}>
-                        <TableCell>${entrada.debe}</TableCell>
-                        <TableCell>${entrada.haber}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-}
-*/

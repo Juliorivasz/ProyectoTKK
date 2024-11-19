@@ -7,34 +7,33 @@ const UserContext = createContext(null);
 
 // Crear un proveedor para el contexto de usuario
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   useEffect(() => {
     // Verificar si hay un usuario en localStorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedTimestamp = localStorage.getItem("timestamp");
 
-    if (!storedUser) {
-      setUser(null); // Asegúrate de que el valor sea null si no hay usuario
-    }
-
+    // Si el usuario existe en localStorage y el timestamp no ha expirado
     if (storedUser && storedTimestamp) {
       const now = new Date().getTime();
       const timeElapsed = now - storedTimestamp;
 
-      // Si han pasado más de 24 horas, elimina el usuario
+      // Si han pasado más de 24 horas, elimina el usuario y el timestamp
       if (timeElapsed > 24 * 60 * 60 * 1000) {
         localStorage.removeItem("user");
         localStorage.removeItem("timestamp");
+        setUser(null); // Borra el usuario del estado
       } else {
-        setUser(storedUser); // Si el tiempo es válido, restaura el usuario
+        setUser(storedUser); // Si no ha expirado, restaura el usuario
       }
+    } else {
+      setUser(null); // Si no hay usuario, asegura que el estado sea null
     }
-  }, []);
+  }, []); // Solo se ejecuta una vez al montar el componente
 
   const login = (userData) => {
     if (userData) {
-      console.log(userData)
       setUser(userData); // Almacena el usuario al hacer login
       localStorage.setItem("user", JSON.stringify(userData)); // Guarda en localStorage
       localStorage.setItem("timestamp", new Date().getTime()); // Guarda el timestamp
@@ -42,7 +41,6 @@ export function UserProvider({ children }) {
       console.error("Error: userData es undefined o null");
     }
   };
-  
 
   const logout = () => {
     setUser(null); // Borra el usuario al hacer logout

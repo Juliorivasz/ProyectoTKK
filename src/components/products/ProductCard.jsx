@@ -11,7 +11,7 @@ export default function ProductCard({ product }) {
   const { user } = useUser(); // Verifica si el usuario está autenticado
 
   const handleAddToCart = () => {
-    if (!user) {
+    if (user?.role !== "client") {
       Swal.fire({
         icon: "warning",
         title: "¡Debes iniciar sesión!",

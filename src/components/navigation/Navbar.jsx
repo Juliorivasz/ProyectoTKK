@@ -1,15 +1,10 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import tkk from "/images/TKK.svg";
 import { FaShoppingCart } from "react-icons/fa";
 import AuthButton from "../../components/navigation/AuthButton";
-import { useUser } from "../../context/UserContext"; // Contexto para el usuario
 import { useCart } from "../../context/CartContext"; // Importa el contexto del carrito
-import Swal from "sweetalert2";
 
 export default function Navbar() {
-  const { user } = useUser(); // Contexto para el usuario
   const { totalItems } = useCart(); // Usa el estado del carrito desde el contexto
 
   return (

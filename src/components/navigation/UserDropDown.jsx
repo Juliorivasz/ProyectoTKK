@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
-import { FaUserCircle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../context/UserContext'; // Asegúrate de importar el hook useUser
+import { useState } from "react";
+import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
+import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext"; // Asegúrate de importar el hook useUser
 
 const UserDropDown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { logout } = useUser(); // Obtienes el método logout del contexto
+  const { user, logout } = useUser(); // Obtienes el método logout del contexto
   const navigate = useNavigate();
 
   const handleClick = (event) => {
@@ -19,13 +19,15 @@ const UserDropDown = () => {
 
   const handleAddressesClick = () => {
     handleClose();
-    navigate('/direcciones'); // Cambia '/direcciones' a la ruta que desees
+    navigate("/direcciones"); // Cambia '/direcciones' a la ruta que desees
   };
 
   const handleLogout = () => {
-    logout(); // Llama a la función logout para cerrar sesión
-    localStorage.removeItem('user'); // Elimina los datos del usuario del localStorage
-    navigate('/auth/login'); // Redirige al login o página deseada después de cerrar sesión
+    if (user?.role === "client") {
+      logout(); // Llama a la función logout para cerrar sesión
+      localStorage.removeItem("user");
+      navigate("/auth/login"); // Redirige al login o página deseada después de cerrar sesión
+    } // Elimina los datos del usuario del localStorage}
   };
 
   return (
@@ -45,13 +47,13 @@ const UserDropDown = () => {
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         keepMounted
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
@@ -65,4 +67,3 @@ const UserDropDown = () => {
 };
 
 export default UserDropDown;
-
