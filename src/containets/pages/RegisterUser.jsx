@@ -50,8 +50,7 @@ export const RegisterUser = () => {
       );
       if (!newUser) throw new Error("Fallo el registro");
 
-      login(newUser);
-      localStorage.setItem("user", JSON.stringify(newUser));
+      login({email: newUser.email, role: "client"});
       navigate("/"); // Redirige al inicio
     } catch (error) {
       setError(

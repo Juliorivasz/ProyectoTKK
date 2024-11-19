@@ -114,10 +114,7 @@ const Direcciones = () => {
 
       const result = await response.text();
       Swal.fire("Dirección Guardada", result, "success");
-      setDirecciones([
-        ...direcciones,
-        { ...newDireccion, id_direccion: Date.now() },
-      ]);
+      setDirecciones([ ...direcciones, { ...newDireccion, id_direccion: Date.now() } ]);
       setNewDireccion({
         codigoPostal: "",
         calle: "",
@@ -147,39 +144,44 @@ const Direcciones = () => {
         </h1>
 
         <div className="space-y-4">
-          {/* Mostrar cada dirección con el botón de eliminar al lado */}
-          {direcciones.map((direccion) => (
-            <div
-              key={direccion.id_direccion}
-              className="bg-gray-100 p-4 rounded-lg shadow-md flex justify-between items-center"
-            >
-              <div className="flex-1">
-                <p className="text-sm text-gray-600">
-                  <strong>Calle:</strong> {direccion.calle}, {direccion.numero}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>Piso:</strong> {direccion.piso},{" "}
-                  <strong>Depto:</strong> {direccion.departamento}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>CP:</strong> {direccion.codigoPostal}
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>Referencias:</strong>{" "}
-                  {direccion.referenciasAdicionales || "N/A"}
-                </p>
-              </div>
-
-              {/* Botón de eliminar junto a los detalles de la dirección */}
-              <button
-                onClick={() => handleDelete(direccion.id_direccion)}
-                className="text-red-600 hover:text-red-800 flex items-center space-x-2 ml-4"
+          {/* Mostrar el mensaje cuando no hay direcciones registradas */}
+          {direcciones.length === 0 ? (
+            <p className="text-sm text-gray-600">No hay ninguna dirección registrada.</p>
+          ) : (
+            // Mostrar cada dirección con el botón de eliminar al lado
+            direcciones.map((direccion) => (
+              <div
+                key={direccion.id_direccion}
+                className="bg-gray-100 p-4 rounded-lg shadow-md flex justify-between items-center"
               >
-                <FaTrash />
-                <span>Eliminar</span>
-              </button>
-            </div>
-          ))}
+                <div className="flex-1">
+                  <p className="text-sm text-gray-600">
+                    <strong>Calle:</strong> {direccion.calle}, {direccion.numero}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Piso:</strong> {direccion.piso},{" "}
+                    <strong>Depto:</strong> {direccion.departamento}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>CP:</strong> {direccion.codigoPostal}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Referencias:</strong>{" "}
+                    {direccion.referenciasAdicionales || "N/A"}
+                  </p>
+                </div>
+
+                {/* Botón de eliminar junto a los detalles de la dirección */}
+                <button
+                  onClick={() => handleDelete(direccion.id_direccion)}
+                  className="text-red-600 hover:text-red-800 flex items-center space-x-2 ml-4"
+                >
+                  <FaTrash />
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Mensaje estático cuando se alcanza el límite de direcciones */}
@@ -262,7 +264,7 @@ const Direcciones = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Referencias Adicionales"
+                  placeholder="Referencias adicionales"
                   value={newDireccion.referenciasAdicionales}
                   onChange={(e) =>
                     setNewDireccion({
@@ -275,7 +277,7 @@ const Direcciones = () => {
               </div>
               <button
                 onClick={handleAdd}
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
               >
                 Guardar Dirección
               </button>
