@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useUser } from "../../context/UserContext";
 import { useNavigate, Outlet } from "react-router-dom";
 import NavbarAdmin from "../LoginAdmin/NavbarAdmin";
@@ -8,12 +9,13 @@ export default function LayoutAdmin({ children }) {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/auth/loginadmin"); // Redirige a la página de inicio (login)
   };
 
-  if (!user || !user.isAdmin) {
-    navigate("/auth/login");
-    return null;
+  // Verifica si el usuario no está logueado o si no es un admin
+  if (!user || user.role !== "admin") {
+    navigate("/auth/loginadmin"); // Redirige al login si no está logueado o no es admin
+    return null; // No renderiza el layout si no es admin
   }
 
   return (

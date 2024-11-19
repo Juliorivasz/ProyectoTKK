@@ -7,7 +7,7 @@ export default function AuthButton() {
 
   return (
     <>
-      {user ? 
+      {user?.role === "client" ? 
       <UserDropDown/>
        :
        <div className='flex gap-x-2'>

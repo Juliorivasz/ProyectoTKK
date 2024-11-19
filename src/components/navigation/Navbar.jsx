@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import tkk from "/images/TKK.svg";
 import { FaShoppingCart } from "react-icons/fa";
@@ -8,6 +6,7 @@ import { useUser } from "../../context/UserContext";
 import { useCart } from "../../context/CartContext";
 import Swal from "sweetalert2";
 import { getProducts } from "../../libs/actions/products";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { user } = useUser();

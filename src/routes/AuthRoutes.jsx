@@ -26,9 +26,9 @@ const AuthRoutes = () => {
       {/* Si el usuario es admin, muestra LayoutAdmin, de lo contrario redirige a loginadmin */}
       <Route
         path="/admin/*"
-        element={user && user.isAdmin ? <LayoutAdmin /> : <Navigate to="/auth/loginadmin" />}
+        element={user && user.role === "admin" ? <LayoutAdmin /> : <Navigate to="/auth/loginadmin" />}
       >
-        <Route path="gestioncontable" element={<GestionContable />} /> {/* Ruta de gestión contable */}
+        <Route index element={<GestionContable />} /> {/* Ruta de gestión contable */}
         <Route path="inventario" element={<Inventario />} /> {/* Ruta de inventario */}
       </Route>
     </Routes>

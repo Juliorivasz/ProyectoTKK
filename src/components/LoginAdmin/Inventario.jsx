@@ -2,23 +2,21 @@ import { useState } from "react";
 import ModificarCosto from "../../containets/pages/dashboard/contable/ModificarCosto";
 import RecargarStock from "../../containets/pages/dashboard/contable/RecargarStock";
 
+
 const Inventario = () => {
   const [view, setView] = useState("menu");
 
   const handleNavigate = (target) => setView(target);
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen -mt-32">
       {/* Fondo con diseño unificado */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: `url('/path-to-your-background.jpg')`, // Cambia por la ruta correcta
-          backgroundSize: "cover",
-          backgroundPosition: "center",
           filter: "blur(5px)",
           opacity: 0.5,
-          zIndex: -1,
+          zIndex: 1,
         }}
       ></div>
 

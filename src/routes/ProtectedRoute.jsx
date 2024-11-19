@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 export default function ProtectedRoute({ children }) {
   const { user } = useUser();
 
-  if (!user) {
+  if (user?.role !== "client") {
     Swal.fire({
       icon: "warning",
       title: "¡Acceso denegado!",
