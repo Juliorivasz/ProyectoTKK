@@ -80,7 +80,7 @@ const Perfil = () => {
         >
           Regresar al Inicio
         </button>
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 -mt-24 -mb-24">
+    <div className="flex justify-center items-center min-h-screen -mt-24 -mb-24">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg">
         <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">Perfil</h1>
         {isLoading ? (
