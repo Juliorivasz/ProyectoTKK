@@ -9,6 +9,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import StepperPay from "../containets/pages/cart/StepperPay";
 import SuccessMessage from "../containets/pages/cart/SucessMessage";
 import Layout from "../components/layouts/Layout";
+import Perfil from "../containets/pages/client/Perfil";
+import Direcciones from "../containets/pages/client/Direcciones";
 
 const AuthRoutes = () => {
   const { user } = useUser();
@@ -17,6 +19,8 @@ const AuthRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/carrito" element={<ProtectedRoute><StepperPay /></ProtectedRoute>} />
+      <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
+      <Route path="/direcciones" element={<ProtectedRoute><Direcciones /></ProtectedRoute>} />
       <Route path="/eureka" element={<Layout><SuccessMessage /></Layout>} />
       <Route path="/loginadmin" element={<LoginAdmin />} /> {/* Ruta para login admin */}
       {/* Si el usuario es admin, muestra LayoutAdmin, de lo contrario redirige a loginadmin */}
